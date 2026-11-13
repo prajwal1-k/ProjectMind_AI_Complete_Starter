@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ProjectMind AI</title>
+<style>
+:root{--bg:#090d18;--panel:#111827;--panel2:#172033;--line:#27334b;--text:#edf2ff;--muted:#91a0ba;--accent:#8b7cff;--accent2:#5d8dff;--good:#39d5a3;--bad:#ff7185}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#1a2042 0,transparent 35%),var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(120deg,var(--accent),var(--accent2));color:white;font-weight:650}button.secondary{background:#202b40;border:1px solid var(--line)}button.danger{background:#442333;color:#ffc5d0}button:disabled{opacity:.5;cursor:not-allowed}
+.layout{display:grid;grid-template-columns:248px 1fr;min-height:100vh}.sidebar{border-right:1px solid var(--line);padding:22px 16px;background:#0c1220}.brand{display:flex;gap:11px;align-items:center;font-size:18px;font-weight:800;margin:3px 8px 32px}.logo{width:35px;height:35px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#7567ff,#368cff);font-size:18px}.navlabel{color:#61718d;font-size:10px;font-weight:800;letter-spacing:1.5px;margin:20px 10px 8px}.nav{display:flex;gap:12px;align-items:center;padding:11px 12px;border-radius:9px;color:#aab7cf;margin:3px 0}.nav.active,.nav:hover{background:#1a2440;color:white}.sidefoot{position:sticky;top:90vh;margin:50px 7px 0;color:var(--muted);font-size:12px}.main{padding:28px 34px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}.eyebrow{color:#9e91ff;font-size:11px;font-weight:800;letter-spacing:1.6px}.h1{font-size:28px;font-weight:800;margin:5px 0}.sub{color:var(--muted)}.status{display:flex;align-items:center;gap:8px;color:#a8b6ce;background:#151f31;border:1px solid var(--line);padding:9px 12px;border-radius:20px}.dot{width:8px;height:8px;background:var(--good);border-radius:50%;box-shadow:0 0 12px var(--good)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}.card{background:linear-gradient(145deg,#141e31,#101827);border:1px solid var(--line);border-radius:15px;padding:18px}.metric{font-size:26px;font-weight:800;margin:12px 0 4px}.muted{color:var(--muted)}.section{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:16px}.cardhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.card h3{margin:0;font-size:15px}.project{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-top:1px solid #202b40}.project:first-of-type{border-top:0}.pname{font-weight:700}.tag{font-size:11px;border-radius:20px;padding:5px 9px;background:#153b36;color:#70e2bd}.tag.wait{background:#3a3020;color:#f5ca79}.actions{display:flex;gap:8px;flex-wrap:wrap}.formrow{display:flex;gap:8px;margin:10px 0}.field{width:100%;background:#0b1322;border:1px solid #2a3852;color:var(--text);border-radius:9px;padding:11px;outline:none}.field:focus{border-color:#8b7cff}.small{font-size:12px}.chatbox{height:350px;overflow:auto;background:#0b1322;border:1px solid var(--line);border-radius:12px;padding:13px;margin:12px 0}.bubble{padding:11px 13px;border-radius:12px;margin:8px 0;max-width:95%;white-space:pre-wrap;line-height:1.55}.user{background:#302b63;margin-left:auto}.bot{background:#19263b}.source{font-size:11px;color:#a99cff;margin-top:8px}.hidden{display:none!important}.modal{position:fixed;inset:0;background:#050914cc;display:grid;place-items:center;padding:18px;z-index:5}.modalbox{width:min(560px,100%);background:#121c2e;border:1px solid var(--line);border-radius:16px;padding:22px}.modalbox h2{margin-top:0}.toast{position:fixed;bottom:22px;right:22px;background:#18253b;border:1px solid var(--line);padding:12px 16px;border-radius:10px;display:none;z-index:9}.filelist{max-height:320px;overflow:auto}.file{padding:8px;border-bottom:1px solid #202b40;color:#c5d0e4;font-family:ui-monospace,monospace;font-size:12px;overflow-wrap:anywhere}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.sidebar{display:none}.main{padding:22px 16px}.grid{grid-template-columns:repeat(2,1fr)}.section{grid-template-columns:1fr}.top{align-items:flex-start;gap:12px;flex-direction:column}}
+@media(max-width:480px){.grid{grid-template-columns:1fr 1fr}.metric{font-size:22px}.formrow{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar">
+ <div class="brand"><div class="logo">✳</div>ProjectMind AI</div>
+ <div class="navlabel">WORKSPACE</div>
+ <div class="nav active">◫ &nbsp; Overview</div><div class="nav">▣ &nbsp; Projects</div><div class="nav">⌘ &nbsp; AI Code Assistant</div><div class="nav">◈ &nbsp; Memory Explorer</div>
+ <div class="navlabel">SYSTEM</div><div class="nav" onclick="openSettings()">⚙ &nbsp; Connection settings</div>
+ <div class="sidefoot">Local-first code intelligence<br><span id="connectionText">Not connected</span></div>
+</aside>
+<main class="main">
+ <div class="top"><div><div class="eyebrow">DEVELOPER WORKSPACE</div><div class="h1">Good to see you.</div><div class="sub">Understand your codebase. Build lasting project memory.</div></div><div class="status"><span class="dot" id="healthDot" style="background:#f5bd55"></span><span id="healthText">Configure connection</span></div></div>
+ <div class="grid">
+  <div class="card"><div class="muted">Projects</div><div class="metric" id="metricProjects">—</div><div class="muted small">Repositories connected</div></div>
+  <div class="card"><div class="muted">Indexed files</div><div class="metric" id="metricFiles">—</div><div class="muted small">Supported source files</div></div>
+  <div class="card"><div class="muted">Memory chunks</div><div class="metric" id="metricChunks">—</div><div class="muted small">Vectorized code segments</div></div>
+  <div class="card"><div class="muted">AI model</div><div class="metric" style="font-size:18px" id="metricModel">—</div><div class="muted small">Connected runtime</div></div>
+ </div>
+ <div class="section">
+  <section class="card">
+   <div class="cardhead"><h3>Your projects</h3><button onclick="openAdd()">＋ Add project</button></div>
+   <div id="projects"><div class="muted">Connect your Colab runtime to load projects.</div></div>
+  </section>
+  <section class="card">
+   <div class="cardhead"><h3>AI engine</h3><span class="tag wait" id="engineBadge">Waiting</span></div>
+   <div class="muted small">Runtime status</div><p id="engineStatus">Set your API URL and key in connection settings.</p>
+   <div class="muted small">Embedding model</div><p>nomic-embed-text</p>
+   <div class="muted small">Vector store</div><p>ChromaDB</p>
+   <button class="secondary" onclick="checkHealth()">Test connection</button>
+  </section>
+ </div>
+ <section class="card" style="margin-top:16px">
+  <div class="cardhead"><div><h3>Ask your codebase</h3><div class="muted small">Answers are grounded in retrieved repository chunks.</div></div><span class="tag">RAG assistant</span></div>
+  <div class="formrow"><select id="chatProject" class="field" style="max-width:240px"><option value="">Select a project</option></select></div>
+  <div class="chatbox" id="chatMessages"><div class="bubble bot">Hi! Add and analyze a repository, then ask me how its code works.</div></div>
+  <div class="formrow"><input id="question" class="field" placeholder="e.g. Where is user authentication implemented?" onkeydown="if(event.key==='Enter')sendQuestion()"><button onclick="sendQuestion()">Ask AI ↗</button></div>
+ </section>
+ <section class="card" style="margin-top:16px">
+  <div class="cardhead"><h3>Project files</h3><span class="muted small" id="fileCount">Choose a project to inspect</span></div>
+  <div class="filelist" id="fileList"><div class="muted small">File tree will appear here after indexing.</div></div>
+ </section>
+</main>
+</div>
+<div class="modal hidden" id="settingsModal"><div class="modalbox"><div class="cardhead"><h2>Connect Colab runtime</h2><button class="secondary" onclick="closeModal('settingsModal')">✕</button></div>
+ <label class="small muted">ngrok API URL</label><input id="apiUrl" class="field" placeholder="https://xxxx.ngrok-free.app">
+ <label class="small muted">ProjectMind API key</label><input id="apiKey" class="field" type="password" placeholder="Paste the key printed by Colab">
+ <p class="muted small">These values are kept in this browser session only. Never share your Colab URL or API key publicly.</p>
+ <div class="actions"><button onclick="saveSettings()">Save and connect</button><button class="secondary" onclick="closeModal('settingsModal')">Cancel</button></div>
+</div></div>
+<div class="modal hidden" id="addModal"><div class="modalbox"><div class="cardhead"><h2>Add a project</h2><button class="secondary" onclick="closeModal('addModal')">✕</button></div>
+ <div class="actions"><button class="secondary" id="tabZip" onclick="showAddTab('zip')">Upload ZIP</button><button class="secondary" id="tabGit" onclick="showAddTab('git')">Git repository</button></div>
+ <div id="zipPane"><p class="muted small">Upload a ZIP archive of your source repository (max 100 MB).</p><input id="zipFile" class="field" type="file" accept=".zip"><div style="margin-top:12px"><button onclick="uploadZip()">Upload project</button></div></div>
+ <div id="gitPane" class="hidden"><p class="muted small">Use a public HTTPS GitHub/GitLab URL. Private repositories require a token; use caution with credentials.</p><input id="gitUrl" class="field" placeholder="https://github.com/owner/repository"><input id="gitBranch" class="field" placeholder="Branch (optional)"><div style="margin-top:12px"><button onclick="cloneRepo()">Connect repository</button></div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+let API = sessionStorage.getItem("pm_api") || "";
+let KEY = sessionStorage.getItem("pm_key") || "";
+let selectedProject = "";
+const $ = id => document.getElementById(id);
+function toast(msg){$("toast").textContent=msg;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",3500)}
+function openSettings(){$("apiUrl").value=API;$("apiKey").value=KEY;$("settingsModal").classList.remove("hidden")}
+function openAdd(){$("addModal").classList.remove("hidden")}
+function closeModal(id){$(id).classList.add("hidden")}
+function saveSettings(){API=$("apiUrl").value.trim().replace(/\/+$/,"");KEY=$("apiKey").value.trim();sessionStorage.setItem("pm_api",API);sessionStorage.setItem("pm_key",KEY);closeModal("settingsModal");checkHealth()}
+function showAddTab(t){$("zipPane").classList.toggle("hidden",t!=="zip");$("gitPane").classList.toggle("hidden",t!=="git")}
+async function request(path,opts={}){if(!API)throw Error("Set your Colab API URL first");opts.headers={...(opts.headers||{}),"X-API-Key":KEY};const r=await fetch(API+path,opts);let data={};try{data=await r.json()}catch{}if(!r.ok)throw Error(data.detail||("HTTP "+r.status));return data}
+async function checkHealth(){try{const d=await request("/health");$("healthText").textContent="AI runtime online";$("healthDot").style.background="var(--good)";$("connectionText").textContent="Connected to Colab";$("engineBadge").textContent="Online";$("engineBadge").className="tag";$("engineStatus").textContent="Connected · "+d.service;$("metricModel").textContent=d.chat_model;await loadProjects();toast("Colab connection successful")}catch(e){$("healthText").textContent="Runtime unavailable";$("healthDot").style.background="var(--bad)";$("connectionText").textContent="Disconnected";$("engineBadge").textContent="Offline";$("engineBadge").className="tag wait";$("engineStatus").textContent=e.message;toast(e.message)}}
+async function loadProjects(){const d=await request("/projects");const box=$("projects"),sel=$("chatProject");box.innerHTML="";sel.innerHTML='<option value="">Select a project</option>';$("metricProjects").textContent=d.projects.length;
+ if(!d.projects.length)box.innerHTML='<div class="muted">No projects yet. Add a repository to get started.</div>';
+ for(const p of d.projects){const row=document.createElement("div");row.className="project";row.innerHTML=`<div><div class="pname"></div><div class="muted small">${p.id}</div></div><div class="actions"><button class="secondary small" data-act="analyze">Analyze</button><button class="secondary small" data-act="files">Files</button><button class="danger small" data-act="delete">Delete</button></div>`;row.querySelector(".pname").textContent=p.name||p.id;row.querySelector('[data-act="analyze"]').onclick=()=>analyze(p.id);row.querySelector('[data-act="files"]').onclick=()=>showFiles(p.id);row.querySelector('[data-act="delete"]').onclick=()=>deleteProject(p.id);box.appendChild(row);const op=document.createElement("option");op.value=p.id;op.textContent=p.name||p.id;sel.appendChild(op)}
+ if(d.projects.length){selectedProject=d.projects[0].id;sel.value=selectedProject;await refreshStats(selectedProject)}}
+async function uploadZip(){const f=$("zipFile").files[0];if(!f)return toast("Choose a ZIP file");const fd=new FormData();fd.append("file",f);try{const d=await request("/projects/upload",{method:"POST",body:fd});closeModal("addModal");toast("Uploaded. Starting analysis...");await analyze(d.id);await loadProjects()}catch(e){toast(e.message)}}
+async function cloneRepo(){const url=$("gitUrl").value.trim();if(!url)return toast("Enter a repository URL");try{const d=await request("/projects/github",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url,branch:$("gitBranch").value.trim()||null})});closeModal("addModal");toast("Repository cloned. Starting analysis...");await analyze(d.id);await loadProjects()}catch(e){toast(e.message)}}
+async function analyze(id){try{toast("Analyzing source code and building memory...");const d=await request(`/projects/${id}/analyze`,{method:"POST"});toast(`Indexed ${d.indexed_files} files · ${d.indexed_chunks} chunks`);selectedProject=id;$("chatProject").value=id;await refreshStats(id);await showFiles(id)}catch(e){toast(e.message)}}
+async function refreshStats(id){try{const d=await request(`/projects/${id}/stats`);$("metricFiles").textContent=d.files;$("metricChunks").textContent=d.chunks}catch(e){}}
+async function showFiles(id){selectedProject=id;$("chatProject").value=id;try{const d=await request(`/projects/${id}/files`);$("fileCount").textContent=d.count+" supported files";$("fileList").innerHTML="";d.files.forEach(f=>{const el=document.createElement("div");el.className="file";el.textContent="▸ "+f;$("fileList").appendChild(el)})}catch(e){toast(e.message)}}
+async function deleteProject(id){if(!confirm("Delete this project and its stored memory?"))return;try{await request(`/projects/${id}`,{method:"DELETE"});toast("Project deleted");await loadProjects()}catch(e){toast(e.message)}}
+function addBubble(text,kind,sources=[]){const el=document.createElement("div");el.className="bubble "+kind;el.textContent=text;$("chatMessages").appendChild(el);if(sources.length){const s=document.createElement("div");s.className="source";s.textContent="Sources: "+[...new Set(sources.map(x=>x.path))].join(" · ");$("chatMessages").appendChild(s)}$("chatMessages").scrollTop=$("chatMessages").scrollHeight}
+async function sendQuestion(){const q=$("question").value.trim(),id=$("chatProject").value;if(!q)return;if(!id)return toast("Select a project first");$("question").value="";addBubble(q,"user");try{const d=await request("/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({project_id:id,question:q,k:6})});addBubble(d.answer,"bot",d.sources)}catch(e){addBubble("Error: "+e.message,"bot")}}
+if(!API){openSettings()}else{checkHealth()}
+</script>
+</body></html>
